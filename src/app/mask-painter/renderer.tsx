@@ -60,7 +60,7 @@ export function TexturePainterRenderer(props: {
 }): null {
   const { gl, mouse } = useThree();
 
-  const theTexture = useTexture('/icecube.jpg');
+  const theTexture = useTexture('/placehoder.png');
 
   const state = useMemo(() => {
     gl.setClearAlpha(0.0);

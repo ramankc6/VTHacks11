@@ -4,6 +4,7 @@ import { TexturePainter } from "@/app/mask-painter"
 import { UploadButton } from "../../components/UploadButton"
 import { useState } from "react";
 import callAsticaAPI from "@/app/api/astica";
+import { getStory } from "@/app/api/chatgpt";
 
 export default function FormPage() {
   const [imageURI, setImageURI] = useState("");
@@ -29,8 +30,13 @@ export default function FormPage() {
       </div>
       <TexturePainter backgroundImageURI={imageURI} />
 
-      <button onClick={() => {
+      <button onClick={async () => {
+        /**
+           * Send to astica and whatever using imageURI
+           */
         callAsticaAPI(imageURI);
+        const story = await getStory("Mitosis", "A cat sitting princely");
+        console.log(story);
       }}>
         Submit Thingy
       </button>

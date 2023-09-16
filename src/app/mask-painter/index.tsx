@@ -32,7 +32,7 @@ export function TexturePainter(props: { backgroundImageURI: string }): JSX.Eleme
   }, [props])
 
   // The currently selected tool.
-  const [tool, setTool] = useState(circleBrush(20.0, new THREE.Color(0xff0000), 1.0));
+  const [tool, setTool] = useState(circleBrush(20.0, new THREE.Color(0xffffff), 0.25));
 
   // The current state of the controls.
   const [controls, setControls] = useState(kInitialControlState);
@@ -45,7 +45,7 @@ export function TexturePainter(props: { backgroundImageURI: string }): JSX.Eleme
   // is used by the three.js render loop to update the shader uniform.
   const drawingPoints = useMemo(() => {
     if (!texture || !texture.image) {
-      return new Uint8Array(4);
+      return new Uint8Array(0);
     }
     return new Uint8Array(texture ? texture.image.width * texture.image.height * 4 : 0);
   }, [texture]);
