@@ -3,7 +3,7 @@
 import { ChangeEvent, useRef } from "react";
 import { generateNextFrame } from "../api/dalle";
 
-function UploadButton() {
+function UploadButton(props: { onUpload: (uri: string) => void }) {
     const fileUploadRef = useRef<HTMLInputElement>(null);
 
     return (
@@ -18,9 +18,7 @@ function UploadButton() {
                     reader.onload = (ev: ProgressEvent<FileReader>) => {
                         const img = ev.target?.result;
                         if (img) {
-                            // Finally can do something with the image URL
-                            console.log(img);
-                            generateNextFrame(img as string);
+                            props.onUpload(img as string);
                         }
                         else {
                             console.error("Error uploading image");
