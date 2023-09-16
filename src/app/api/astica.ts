@@ -3,7 +3,7 @@ import axios from "axios";
 
 async function callAsticaAPI(inputUrl: string) {
   const requestData = {
-    tkn: 'REPLACE',
+    tkn: `${process.env.ASTICA_API_KEY}`,
     modelVersion: '2.1_full',
     input: inputUrl, // Use the provided input URL
     visionParams: "describe,tags"

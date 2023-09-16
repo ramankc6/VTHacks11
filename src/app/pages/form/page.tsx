@@ -1,8 +1,9 @@
 "use client"
-
+import "@/app/api/astica"
 import { TexturePainter } from "@/app/mask-painter"
 import { UploadButton } from "../../components/UploadButton"
 import { useState } from "react";
+import callAsticaAPI from "@/app/api/astica";
 
 export default function FormPage() {
   const [imageURI, setImageURI] = useState("");
@@ -29,9 +30,7 @@ export default function FormPage() {
       <TexturePainter backgroundImageURI={imageURI} />
 
       <button onClick={() => {
-        /**
-         * Send to astica and whatever using imageURI
-         */
+        callAsticaAPI(imageURI);
       }}>
         Submit Thingy
       </button>
