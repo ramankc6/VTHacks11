@@ -4,7 +4,7 @@ import React from "react";
 import TextTransition, { presets } from "react-text-transition";
 import { RoughNotation } from "react-rough-notation";
 
-const TEXTS = ["SCIENCE", "ECONOMICS", "ALGEBRA", "SPANISH"];
+const TEXTS = ["SCIENCE", "ECONOMICS", "ALGEBRA","DIVERSITY", "AI","ENTROPY", "GITHUB","CANCER", "UTPROSIM", "VECTORS","FOREX", "HACKING", "EDUCATION","BREXIT", "VTHACKS"];
 
 export function ScrollingText() {
   const [index, setIndex] = React.useState(0);
