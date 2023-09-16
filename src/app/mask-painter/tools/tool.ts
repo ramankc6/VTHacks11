@@ -1,6 +1,6 @@
 import { FrameCallback } from '../renderer';
 
-export type ToolName = 'Circle Brush' | 'Circle Eraser' | 'Square Brush' | 'Square Eraser';
+export type ToolName = 'Circle Brush' | 'Circle Eraser';
 
 export type Tool<Name extends ToolName = ToolName> = {
   name: Name;
