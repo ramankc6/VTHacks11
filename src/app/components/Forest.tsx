@@ -25,12 +25,8 @@ type GLTFResult = GLTF & {
 export function Forest(
   props: JSX.IntrinsicElements["group"] & {
     setOpacity: (opacity: number) => void;
-    setDeskVisible: (visible: boolean) => void;
-    deskVisible: boolean;
     opacity: number;
     setForestVisible: (visible: boolean) => void;
-    setFar: (far: number) => void;
-    far: number;
   }
 ) {
   const { nodes, materials } = useGLTF("/forest.glb") as GLTFResult;
@@ -43,17 +39,11 @@ export function Forest(
       props.setOpacity(opacity);
     }
     if (camera.position.distanceTo(new THREE.Vector3()) < 1200) {
-      if (props.deskVisible) {
-        props.setDeskVisible(false);
-        props.setForestVisible(true);
-        props.setFar(1200);
-      }
+      props.setForestVisible(true);
+      camera.far = 1200;
     } else {
-      if (!props.deskVisible) {
-        props.setDeskVisible(true);
-        props.setForestVisible(false);
-        props.setFar(10000);
-      }
+      props.setForestVisible(false);
+      camera.far = 100000000;
     }
   });
 

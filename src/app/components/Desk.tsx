@@ -9,8 +9,8 @@ Title: Victorian work desk (openable)
 
 import * as THREE from "three";
 import React, { useEffect, useRef } from "react";
-import { useThree } from "@react-three/fiber";
-import { useGLTF, useAnimations } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useGLTF, useAnimations, useTexture } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 
 type GLTFResult = GLTF & {
@@ -80,21 +80,37 @@ export function Desk(props: JSX.IntrinsicElements["group"]) {
     "/victorian_work_desk_openable.glb"
   ) as GLTFResult;
   const { actions } = useAnimations(animations, group);
-  const { camera } = useThree();
+  const { camera, scene } = useThree();
+
+  const texture = useTexture("/goodwin.jpg");
+
+  useEffect(() => {
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    scene.background = texture;
+  }, [texture]);
+
+  useFrame((frame, delta) => {
+    if (camera.position.distanceTo(new THREE.Vector3()) > 1200) {
+      actions[
+        Object.keys(actions)[Math.round(delta) % Object.keys(actions).length]
+      ]?.play();
+    }
+  });
 
   return (
     <group
       ref={group}
       {...props}
       dispose={null}
-      position={[0, -500, -300]}
-      scale={1000}
+      position={[800, -500, 1100]}
+      scale={1200}
     >
       <group name="Sketchfab_Scene">
-        <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
+        <group name="Sketchfab_model">
           <group
             name="12b5e0b2b3274b0f8e3d17f6001b3c43fbx"
-            rotation={[Math.PI / 2, 0, 0]}
+            rotation={[0, Math.PI / 4, 0]}
+            position={[0, 0, 0]}
             scale={0.01}
           >
             <group name="Object_2">
