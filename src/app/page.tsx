@@ -3,7 +3,7 @@
 import React, { Suspense, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Forest } from "./components/Forest";
-import { Desk } from "./components/Desk";
+import { Goodwin } from "./components/Goodwin";
 import { Loader } from "./components/Loader";
 import { MainPage } from "./components/Main";
 
@@ -14,14 +14,14 @@ export default function Home() {
     <Suspense fallback={<Loader />}>
       <Canvas camera={{ far: 1200 }}>
         <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 15, 20]} />
+        <directionalLight />
         <Forest
           setForestVisible={setForestVisible}
           setOpacity={setOpacity}
           opacity={opacity}
           visible={forestVisible}
         />
-        <Desk />
+        <Goodwin />
       </Canvas>
       <MainPage opacity={opacity} />
     </Suspense>

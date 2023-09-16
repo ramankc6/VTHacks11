@@ -9,7 +9,7 @@ export function MainPage(props: { opacity: number }): JSX.Element {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setLoaded(true);
-    }, 2000);
+    }, 1000);
     return () => clearTimeout(intervalId);
   });
 
@@ -19,8 +19,10 @@ export function MainPage(props: { opacity: number }): JSX.Element {
         <ScrollingText />
         <Instructions />
       </div>
-      <div style={{ width: "100%", opacity: 1 - props.opacity }}>
-        <UploadButton onUpload={(uri) => {}} />
+      <div
+        style={{ height: "100%", width: "100%", opacity: 1 - props.opacity }}
+      >
+        <h1>Hey</h1>
       </div>
     </>
   ) : (
