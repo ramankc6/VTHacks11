@@ -1,8 +1,9 @@
 import { OpenAI } from "openai";
 
-const config = new OpenAI({
-  organization: "org-TmJDI1qNxxPsvv0sGniSnxDc",
-  apiKey: process.env.REACT_APP_OPENAI_API_KEY,
-});
+// console.log(process.env.OPENAI_KEY)
+// const config = new OpenAI({
+//   organization: "org-TmJDI1qNxxPsvv0sGniSnxDc", 
+//   apiKey: process.env.OPENAI_KEY,
+// });
 
-export default config;
+// export default config;
