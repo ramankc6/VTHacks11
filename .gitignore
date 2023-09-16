@@ -1,7 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-/public/victorian_work_desk_openable.glb
-
 .env
 
 # dependencies
