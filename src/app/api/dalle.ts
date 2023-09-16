@@ -1,5 +1,5 @@
 import { ImageEditParams } from "openai/resources/images.mjs";
-// import openai from "./openai_config";
+import openai from "./openai_config";
 
 function dataURItoFile(dataURI: string) {
   // convert base64 to raw binary data held in a string
@@ -24,13 +24,13 @@ export const generateNextFrame = async (imageURI: string) => {
 
   const params: ImageEditParams = {
     image,
-    prompt: "Story goes here",
-    mask: image
+    prompt: "magical prince cat on velvet carpet",
+    // mask: image
   };
 
-  // const result = await openai.images.edit(params);
+  const result = await openai.images.edit(params);
 
-  // console.log(result);
+  console.log(result);
 
-  // return result.data;
+  return result.data;
 };

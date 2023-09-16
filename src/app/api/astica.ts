@@ -1,31 +1,29 @@
 // src/api/astica.ts
 import axios from "axios";
+import { uploadImage } from "./s3";
 
-async function callAsticaAPI(inputUrl: string) {
+
+async function getImageCaption(inputUrl: string) {
+  const url = await uploadImage(inputUrl);
   const requestData = {
-    tkn: `${process.env.ASTICA_API_KEY}`,
-    modelVersion: '2.1_full',
-    input: inputUrl, // Use the provided input URL
-    visionParams: "describe,tags"
+    tkn: '1B4B3DF9-FEDA-457E-A3AD-6707037C923F8EA80967-F514-49B5-8A5D-2FD9CB8D5C70',  // visit https://astica.ai
+    modelVersion: '2.1_full', // 1.0_full, 2.0_full, or 2.1_full
+    input: url,
+    visionParams: 'describe, tags', // comma separated, defaults to all
+    gpt_prompt: '', // only used if visionParams includes "gpt" or "gpt_detailed"
+    prompt_length: 95 // number of words in GPT response
   };
 
-  try {
-    const response = await axios.post("https://vision.astica.ai/describe", {
-      method: 'POST',
+  const response = await axios({
+      method: 'post',
+      url: 'https://vision.astica.ai/describe',
+      data: requestData,
       headers: {
-        'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
       },
-      body: JSON.stringify(requestData),
-    });
+  });
 
-    if (response.status !== 200) {
-      throw new Error(`Astica API request failed with status ${response.status}`);
-    }
-
-    return response.data;
-  } catch (error: any) {
-    throw new Error(`Error calling Astica API: ${error.message}`);
-  }
+  return response.data.caption.text;
 }
 
-export default callAsticaAPI;
+export { getImageCaption };

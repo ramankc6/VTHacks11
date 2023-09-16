@@ -47,7 +47,7 @@ body {
   font-size: 30px;
   line-height: 1.8;
   color: #171717;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 h1 {
