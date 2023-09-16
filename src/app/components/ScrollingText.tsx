@@ -1,34 +1,27 @@
 "use client";
 
-import { motion, useAnimation } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { useEffect } from "react";
+import React from "react";
+import { Row } from "react-bootstrap";
+import TextTransition, { presets } from "react-text-transition";
 
-const textVariant = {
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
-  hidden: { opacity: 0, scale: 0 },
-};
+const TEXTS = ["SCIENCE", "ECONOMICS", "ALGEBRA", "SPANISH"];
 
-function ScrollingText(props: { text: string }) {
-  const control = useAnimation();
-  const [ref, inView] = useInView();
+export function ScrollingText() {
+  const [index, setIndex] = React.useState(0);
 
-  useEffect(() => {
-    if (inView) {
-      control.start("visible");
-    } else {
-      control.start("hidden");
-    }
-  }, [control, inView]);
+  React.useEffect(() => {
+    const intervalId = setInterval(() => setIndex((index) => index + 1), 2000);
+    return () => clearTimeout(intervalId);
+  }, []);
 
   return (
-    <motion.div
-      ref={ref}
-      variants={textVariant}
-      initial="hidden"
-      animate={control}
-    >
-      <h1>{props.text}</h1>
-    </motion.div>
+    <Row>
+      <h1>TEACH ME ABOUT</h1>
+      <h1>
+        <TextTransition springConfig={presets.wobbly}>
+          {TEXTS[index % TEXTS.length]}
+        </TextTransition>
+      </h1>
+    </Row>
   );
 }

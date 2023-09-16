@@ -1,10 +1,10 @@
 // src/api/astica.ts
-// pages/api/upload.ts
 
 import { NextApiRequest, NextApiResponse } from "next";
 import multer from "multer";
 import fs from "fs-extra";
 import axios from "axios";
+import { Request } from "express";
 
 const upload = multer({ dest: "uploads/" });
 
@@ -15,7 +15,7 @@ export const config = {
 };
 
 export default async function handler(
-  req: NextApiRequest,
+  req: NextApiRequest & Request,
   res: NextApiResponse
 ) {
   try {
@@ -42,6 +42,7 @@ export default async function handler(
       // Delete the uploaded file
       await fs.unlink(path);
 
+      // Manually set the response status and send JSON data
       res.status(200).json({ description });
     });
   } catch (error) {
