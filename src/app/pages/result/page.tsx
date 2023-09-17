@@ -65,12 +65,6 @@ function ResultsPage() {
 
       setStory(newStory);
 
-      const narration = await axios.post("/api/narration", {
-        text: newStory,
-      });
-
-      console.log(narration.data.audioUrl);
-
       setState("success");
     })();
   }, []);
