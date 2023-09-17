@@ -1,7 +1,7 @@
 "use client";
 
 import * as THREE from "three";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { TexturePainterRenderer } from "./renderer";
 import { Tool, circleBrush } from "./tools";
@@ -16,6 +16,7 @@ export * from "./tools";
 export function TexturePainter(props: {
   formOpacity: number;
   texture: THREE.Texture;
+  outputBuffer: Uint8Array;
 }): JSX.Element {
   // These handlers are used to register the cursor events with the canvas.
   // If the handlers are not registered, then the cursor events will not be
@@ -41,15 +42,6 @@ export function TexturePainter(props: {
   // This is used to hide the cursor overlay when the cursor leaves the canvas.
   const [hideCursorOverlay, setHideCursorOverlay] = useState(true);
 
-  const drawingPoints = useMemo(() => {
-    if (!props.texture || !props.texture.image) {
-      return new Uint8Array(0);
-    }
-    return new Uint8Array(
-      props.texture.image.width * props.texture.image.height * 4
-    );
-  }, [props.texture]);
-
   return (
     <>
       <TexturePainterOverlay updateTool={setTool} />
@@ -57,8 +49,12 @@ export function TexturePainter(props: {
         className="texture-painter-container"
         style={{
           opacity: props.formOpacity * props.formOpacity,
-          width: props.texture.image ? props.formOpacity * props.texture.image.width : 0,
-          height: props.texture.image ? props.formOpacity * props.texture.image.height : 0,
+          width: props.texture.image
+            ? props.formOpacity * props.texture.image.width
+            : 0,
+          height: props.texture.image
+            ? props.formOpacity * props.texture.image.height
+            : 0,
         }}
       >
         <Canvas
@@ -79,7 +75,7 @@ export function TexturePainter(props: {
           <TexturePainterRenderer
             frameHandler={tool.frameHandler}
             cursorOverlay={tool.cursorOverlay}
-            drawingPoints={drawingPoints}
+            drawingPoints={props.outputBuffer}
             controls={controls}
             hideCursorOverlay={hideCursorOverlay}
             texture={props.texture}

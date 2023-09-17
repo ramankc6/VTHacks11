@@ -12,7 +12,7 @@ export function MainPage(props: {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setLoaded(true);
-    }, 800);
+    }, 1200);
     return () => clearTimeout(intervalId);
   });
 
