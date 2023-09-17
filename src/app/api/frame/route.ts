@@ -48,14 +48,16 @@ export async function POST(req: NextRequest) {
     const description = json.description;
 
     const params: ImageGenerateParams = {
-        prompt: description
+        prompt: description,
+        n: 1,
+        size: "256x256",
     };
 
     const result = await openai.images.generate(params);
 
     return NextResponse.json(
         {
-            response: result.data
+            url: result.data
         },
         {
             status: 200

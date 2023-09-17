@@ -46,7 +46,6 @@ body {
   font-family: "Quicksand", sans-serif;
   font-size: 30px;
   line-height: 1.8;
-  pointer-events: none;
   color: #171717;
   overflow: hidden;
 }
