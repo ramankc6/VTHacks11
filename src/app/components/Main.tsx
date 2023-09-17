@@ -1,30 +1,31 @@
 import { useEffect, useState } from "react";
 import { ScrollingText } from "./ScrollingText";
 import { Instructions } from "./Instructions";
-import { UploadButton } from "./UploadButton";
+import Form from "./Form";
 
-export function MainPage(props: { opacity: number }): JSX.Element {
+export function MainPage(props: {
+  opacity: number;
+  formOpacity: number;
+}): JSX.Element {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       setLoaded(true);
-    }, 1000);
+    }, 800);
     return () => clearTimeout(intervalId);
   });
 
   return loaded ? (
-    <>
+    <div>
       <div style={{ opacity: props.opacity }}>
         <ScrollingText />
         <Instructions />
       </div>
-      <div
-        style={{ height: "100%", width: "100%", opacity: 1 - props.opacity }}
-      >
-        <h1>Hey</h1>
+      <div style={{ opacity: props.formOpacity }}>
+        <Form opacity={props.formOpacity} />
       </div>
-    </>
+    </div>
   ) : (
     <></>
   );

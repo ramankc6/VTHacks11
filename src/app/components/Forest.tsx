@@ -25,6 +25,8 @@ type GLTFResult = GLTF & {
 export function Forest(
   props: JSX.IntrinsicElements["group"] & {
     setOpacity: (opacity: number) => void;
+    setFormOpacity: (opacity: number) => void;
+    formOpacity: number;
     opacity: number;
     setForestVisible: (visible: boolean) => void;
   }
@@ -35,8 +37,14 @@ export function Forest(
 
   useFrame(() => {
     const opacity = 1 - camera.position.distanceTo(new THREE.Vector3()) / 35.0;
-    if (Math.abs(props.opacity - opacity) > 0.01) {
+    const formOpacity =
+      Math.max(camera.position.distanceTo(new THREE.Vector3()) - 1100, 0.0) /
+      1000;
+    if (Math.abs(props.opacity - opacity) > 0.0001) {
       props.setOpacity(opacity);
+    }
+    if (Math.abs(props.formOpacity - formOpacity) > 0.0001) {
+      props.setFormOpacity(formOpacity);
     }
     if (camera.position.distanceTo(new THREE.Vector3()) < 1200) {
       props.setForestVisible(true);
@@ -62,7 +70,7 @@ export function Forest(
         </group>
       </group>
       <OrbitControls
-        autoRotate={camera.position.distanceTo(new THREE.Vector3()) < 1200}
+        autoRotate
         minDistance={5}
         zoomSpeed={1.5}
         maxDistance={2300}

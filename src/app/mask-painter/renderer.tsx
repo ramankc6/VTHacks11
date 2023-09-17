@@ -1,11 +1,11 @@
-import * as THREE from 'three';
-import { useMemo } from 'react';
-import { useTexture } from '@react-three/drei';
-import { useFrame, useThree } from '@react-three/fiber';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
-import { fragmentShader, vertexShader } from './shaders';
-import { TexturePainterControlState } from './controls';
+import * as THREE from "three";
+import { useMemo } from "react";
+import { useTexture } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass";
+import { fragmentShader, vertexShader } from "./shaders";
+import { TexturePainterControlState } from "./controls";
 
 /**
  * The parameters passed to the three.js render loop callback.
@@ -55,13 +55,9 @@ export function TexturePainterRenderer(props: {
   drawingPoints: Uint8Array;
   controls: TexturePainterControlState;
   hideCursorOverlay: boolean;
-  texture: THREE.Texture | undefined;
-  setTexture: (texture: THREE.Texture) => void;
+  texture: THREE.Texture;
 }): null {
   const { gl, mouse } = useThree();
-
-  const theTexture = useTexture('/thing.png');
-
   const state = useMemo(() => {
     gl.setClearAlpha(0.0);
     if (props.texture && props.texture.image) {
@@ -71,10 +67,16 @@ export function TexturePainterRenderer(props: {
       );
       const cursorPosUniform = new THREE.Uniform(new THREE.Vector2(...mouse));
       const drawingUniform = new THREE.Uniform(
-        new THREE.DataTexture(props.drawingPoints, resolution.width, resolution.height)
+        new THREE.DataTexture(
+          props.drawingPoints,
+          resolution.width,
+          resolution.height
+        )
       );
       const cursorOverlayUniform = new THREE.Uniform(props.cursorOverlay);
-      const hideCursorOverlayUniform = new THREE.Uniform(props.hideCursorOverlay);
+      const hideCursorOverlayUniform = new THREE.Uniform(
+        props.hideCursorOverlay
+      );
 
       const composer = new EffectComposer(gl);
       composer.addPass(
@@ -93,11 +95,13 @@ export function TexturePainterRenderer(props: {
           })
         )
       );
-      return [resolution, composer, { cursorPosUniform, drawingUniform }] as const;
-    } else {
-      props.setTexture(theTexture);
+      return [
+        resolution,
+        composer,
+        { cursorPosUniform, drawingUniform },
+      ] as const;
     }
-  }, [gl, mouse, props.cursorOverlay, props.hideCursorOverlay, props.texture, props.setTexture]);
+  }, [gl, mouse, props.cursorOverlay, props.hideCursorOverlay, props.texture]);
 
   return useFrame((_, delta) => {
     if (state) {
@@ -114,7 +118,11 @@ export function TexturePainterRenderer(props: {
       });
 
       uniforms.cursorPosUniform.value.copy(mouse);
-      uniforms.drawingUniform.value = new THREE.DataTexture(props.drawingPoints, resolution.width, resolution.height);
+      uniforms.drawingUniform.value = new THREE.DataTexture(
+        props.drawingPoints,
+        resolution.width,
+        resolution.height
+      );
       uniforms.drawingUniform.value.needsUpdate = true;
 
       gl.clear();
