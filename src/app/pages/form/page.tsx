@@ -1,11 +1,8 @@
 "use client"
-import "@/app/api/astica"
 import { TexturePainter } from "@/app/mask-painter"
 import { UploadButton } from "../../components/UploadButton"
-import { useEffect, useState } from "react";
-import { getImageCaption } from "@/app/api/astica";
-import { getStory } from "@/app/api/chatgpt";
-import { generateNextFrame } from "@/app/api/dalle";
+import { useState } from "react";
+import axios from "axios";
 
 
 export default function FormPage() {
@@ -34,7 +31,9 @@ export default function FormPage() {
       <button onClick={async () => {
         // const result = await getImageCaption(imageURI);
         // console.log(result);
-        const result = await generateNextFrame(imageURI);
+        // const result = await generateNextFrame(imageURI);
+        // console.log(result);
+        const result = await axios.post('/api/caption', { imageURI });
         console.log(result);
         // then feed into gpt
       }}>

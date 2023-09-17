@@ -1,5 +1,6 @@
 import { ChatCompletionMessage } from "openai/resources/chat/completions.mjs";
-import openai from "./openai_config";
+import { NextResponse, NextRequest } from "next/server";
+import openai from "../openai_config";
 
 const SYSTEM_PROMPT: string = `
 You are now StoryGPT. Your job is to take in an input of an AI that describes an image for you and create a script for a story teaching the user about a certain topic. It should be a short story divided in 4 parts and each part should have its own DALL-E prompt that will be a background for the story. Do not reply with anything except the script itself. Give the full script without prompting the users permission to continue
@@ -72,28 +73,48 @@ export const generatePrompt = (topic: string, imageDescription: string) => {
   return `${SYSTEM_PROMPT}\n\nYour job is to teach the user about ${topic} and your AI image description is "${imageDescription}"`;
 };
 
-export const getStory = async (topic: string, imageDescription: string) => {
-  const userPrompt = generatePrompt(topic, imageDescription);
+export type FrameContent = {
+    dalleCaption: string;
+    narration: string;
+}
 
-  const messages: ChatCompletionMessage[] = [
-    {
-      role: "system",
-      content: SYSTEM_PROMPT,
-    },
-    {
-      role: "user",
-      content: userPrompt,
-    },
-  ];
+const parseOutput = (story: string) => {
+    
+    return story;
+}
 
-  const chat = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    messages,
-  });
+export async function POST(req: NextRequest) {
+    // topic: string, imageDescription: string
+    const json = await req.json();
+    const topic = json.topic;
+    const caption = json.caption;
 
-  const response = chat.choices[0].message?.content;
+    const userPrompt = generatePrompt(topic, caption);
 
-  console.log(response);
+    const messages: ChatCompletionMessage[] = [
+        {
+        role: "system",
+        content: SYSTEM_PROMPT,
+        },
+        {
+        role: "user",
+        content: userPrompt,
+        },
+    ];
 
-  return response as string;
+    const chat = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages,
+    });
+
+    const response = chat.choices[0].message?.content;
+
+    return NextResponse.json(
+        {
+            story: response
+        },
+        {
+            status: 200
+        }
+    )
 };

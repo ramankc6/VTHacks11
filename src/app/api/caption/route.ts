@@ -1,10 +1,14 @@
 // src/api/astica.ts
 import axios from "axios";
-import { uploadImage } from "./s3";
+import { uploadImage } from "../s3";
+import { NextResponse, NextRequest } from "next/server";
 
+export async function POST(req: NextRequest) {
+  const json = await req.json();
+  const inputUrl = json.imageURI;
 
-async function getImageCaption(inputUrl: string) {
   const url = await uploadImage(inputUrl);
+
   const requestData = {
     tkn: '1B4B3DF9-FEDA-457E-A3AD-6707037C923F8EA80967-F514-49B5-8A5D-2FD9CB8D5C70',  // visit https://astica.ai
     modelVersion: '2.1_full', // 1.0_full, 2.0_full, or 2.1_full
@@ -22,8 +26,13 @@ async function getImageCaption(inputUrl: string) {
           'Content-Type': 'application/json',
       },
   });
-
-  return response.data.caption.text;
+  
+  return NextResponse.json(
+    {
+      caption: response.data.caption.text 
+    },
+    {
+      status: 200
+    }
+  )
 }
-
-export { getImageCaption };

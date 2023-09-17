@@ -1,11 +1,10 @@
 import * as AWS from "aws-sdk";
 import { v4 as uuidv4 } from 'uuid';
-import { promisify } from "util";
 
 AWS.config.update({
-  accessKeyId: "AKIAS2W7XBVHMLD4FZ5H",
-  secretAccessKey: "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",
-  region: "us-east-1"
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+  region: process.env.AWS_REGION
 })
 
 const s3 = new AWS.S3();
@@ -27,7 +26,7 @@ export async function uploadImage(dataUri: string) {
     const imgBuffer = extractBinaryData(dataUri);
 
     const params = {
-        Bucket: 'teach-me-about',
+        Bucket: process.env.S3_BUCKET_NAME as string,
         Key: `${uuidv4()}.png`,
         Body: imgBuffer
     }
@@ -41,6 +40,8 @@ export async function uploadImage(dataUri: string) {
             }
         }
     ));
+
     const url = (res as any).Location as string;
+    
     return url;
 }
