@@ -95,9 +95,9 @@ function SimpleCarousel() {
                     color: "white",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "left",
-                    left: "45%",
-                    fontFamily: "Storytime"
+                    justifyContent: "center",
+                    fontFamily: "Storytime",
+                    flexDirection: "column"
                 }}>
                     <LoadingText />
                     
