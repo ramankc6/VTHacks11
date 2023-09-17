@@ -9,7 +9,7 @@ function UploadButton(props: { onUpload: (uri: string) => void }) {
         <>
             <input 
                 type="file" 
-                accept=".png" 
+                accept=".png,.jpg" 
                 ref={fileUploadRef} 
                 style={{display: "none"}}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
