@@ -30,11 +30,13 @@ function UploadButton(props: { onUpload: (uri: string) => void }) {
                 }}
             />
             <button 
-                className="flex flex-row bg-slate-200 hover:bg-slate-400 transition active:bg-slate-300 p-1 text-slate-800 font-bold rounded text-sm" onClick={() => {
+                className="flex flex-row bg-slate-200 hover:bg-slate-400 transition active:bg-slate-300 p-1 text-slate-800 font-bold rounded text-sm h-10" style={{
+                    alignItems: "center"
+                }}onClick={() => {
                     fileUploadRef.current?.click()
                 }
             }> 
-                <img src="/upload.png" className="w-4"/> <span>Upload Image</span> 
+                <img src="/upload.png" className="w-4 mr-2"/> <span>Upload Image</span> 
             </button>
         </>
     )

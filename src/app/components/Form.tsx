@@ -1,5 +1,5 @@
 "use client";
-import { TexturePainter } from "@/app/mask-painter";
+
 import { UploadButton } from "./UploadButton";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { lerp } from "three/src/math/MathUtils.js";
@@ -12,29 +12,16 @@ export default function FormPage(props: { opacity: number }) {
   const [topic, setTopic] = useState<string>();
   const [texture, setTexture] = useState<THREE.Texture>();
 
-  useEffect(() => {
-    if (imageURI) {
-      new THREE.TextureLoader().load(imageURI, (texture) => {
-        setTexture(texture);
-      });
-    }
-  }, [imageURI]);
-
-  const drawingPoints = useMemo(() => {
-    if (texture) {
-      return new Uint8Array(texture.image.width * texture.image.height * 4);
-    }
-  }, [texture]);
-
-  const [gl, setGl] = useState<THREE.WebGLRenderer>();
-
-  const canvas = useRef<HTMLCanvasElement>(null);
+  // useEffect(() => {
+  //   if (imageURI) {
+  //     new THREE.TextureLoader().load(imageURI, (texture) => {
+  //       setTexture(texture);
+  //     });
+  //   }
+  // }, [imageURI]);
 
   return (
     <>
-      <Canvas ref={canvas}>
-        <FakeCanvas gl={gl} setGl={setGl} texture={texture} />
-      </Canvas>
       <div
         style={{
           position: "absolute",
@@ -46,7 +33,7 @@ export default function FormPage(props: { opacity: number }) {
           backgroundColor: "rgba(0, 0, 0, 0.2)",
           backdropFilter: "blur(3px)",
           maxWidth: texture ? undefined : "30%",
-          minWidth: "30%",
+          minWidth: "37%",
           minHeight: "75%",
           maxHeight: texture ? undefined : "75%",
           fontSize: "48px",
@@ -54,6 +41,7 @@ export default function FormPage(props: { opacity: number }) {
           textAlign: "left",
           overflow: "scroll",
           overflowX: "scroll",
+          padding: "40px"
         }}
       >
         <div style={{ display: "flex" }}>
@@ -64,55 +52,59 @@ export default function FormPage(props: { opacity: number }) {
               marginLeft: "12px",
               marginBottom: "24px",
               marginTop: "24px",
+              width: "250px",
+              backgroundColor: "rgba(255,255,255,0.5)",
+              outline: "none",
+              border: "2px solid #ddd",
+              fontSize: "1.3rem"
             }}
-            className="text-slate-500 p-1 text-sm rounded"
+            className="text-slate-900 p-1 text-base rounded"
             onChange={(e) => {
               setTopic(e.target.value);
             }}
           />
         </div>
-        <div style={{ display: "flex" }}>
-          <div>
-            <h1>Upload the Protagonist:</h1>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div className="flex flex-row" style={{
+            alignItems: "center"
+          }}>
+            <h1 className="mr-5">Upload base image:</h1>
             <UploadButton
               onUpload={(uri: string) => {
                 setImageURI(uri);
               }}
             />
           </div>
-          {imageURI && texture && drawingPoints ? (
-            <>
-              <TexturePainter
-                outputBuffer={drawingPoints}
-                formOpacity={props.opacity}
-                texture={texture}
-              />
+          {imageURI && (
+            <div style={{
+              width: "400px"
+            }}>
+              <img src={imageURI} className="rounded" style={{
+                height: "auto",
+                width: "100%",
+                display: "block",
+                objectFit: "cover",
+                marginInline: "auto",
+                border: "2px dashed black"
+              }}/>
               <button
                 disabled={
                   false && (topic?.length === 0 || imageURI?.length === 0)
                 }
                 onClick={async () => {
-                  if (canvas) {
-                    const blob = await new Promise<Blob>((resolve, reject) =>
-                      canvas.current?.toBlob((bloc) => {
-                        if (bloc) {
-                          resolve(bloc);
-                        } else {
-                          reject();
-                        }
-                      })
-                    );
-                    const url = URL.createObjectURL(blob);
-                  }
+                  localStorage.setItem("imageURI", imageURI);
+                  localStorage.setItem("topic", topic as string);
                   window.location.href = "pages/result";
                 }}
+                className="bg-slate-50 p-3 rounded mt-5 hover:bg-slate-200 transition active:bg-slate-100"
+                style={{
+                  fontSize: "1.3rem"
+                }}
               >
-                Submit Thingy
+                Teach me a Story!
               </button>
-            </>
-          ) : (
-            <></>
-          )}
+            </div>
+          )} 
         </div>
       </div>
     </>

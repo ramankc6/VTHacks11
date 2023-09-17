@@ -1,4 +1,4 @@
-import { ImageEditParams } from "openai/resources/images.mjs";
+import { ImageEditParams, ImageGenerateParams } from "openai/resources/images.mjs";
 import openai from "../../api/openai_config";
 import { NextRequest, NextResponse } from "next/server";
 import * as fs from 'node:fs';
@@ -44,23 +44,14 @@ function dataURItoFile(dataURI: string, filename = 'image.png') {
 
 // gen next frame
 export async function POST(req: NextRequest) {
-    //imageURI: string
     const json = await req.json();
-    const imageURI = json.imageURI;
-    const maskURI = json.maskURI ? json.maskURI : imageURI;
     const description = json.description;
-    const image = dataURItoFile(imageURI);
-    const mask = dataURItoFile(maskURI);
 
-    const params: ImageEditParams = {
-        image,
-        mask,
+    const params: ImageGenerateParams = {
         prompt: description
     };
 
-    const result = await openai.images.edit(params);
-
-    console.log(result);
+    const result = await openai.images.generate(params);
 
     return NextResponse.json(
         {
