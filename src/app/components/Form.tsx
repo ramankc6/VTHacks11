@@ -41,7 +41,7 @@ export default function FormPage(props: { opacity: number }) {
           textAlign: "left",
           overflow: "scroll",
           overflowX: "scroll",
-          padding: "40px"
+          padding: "16px",
         }}
       >
         <div style={{ display: "flex" }}>
@@ -56,7 +56,7 @@ export default function FormPage(props: { opacity: number }) {
               backgroundColor: "rgba(255,255,255,0.5)",
               outline: "none",
               border: "2px solid #ddd",
-              fontSize: "1.3rem"
+              fontSize: "1.3rem",
             }}
             className="text-slate-900 p-1 text-base rounded"
             onChange={(e) => {
@@ -65,9 +65,12 @@ export default function FormPage(props: { opacity: number }) {
           />
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div className="flex flex-row" style={{
-            alignItems: "center"
-          }}>
+          <div
+            className="flex flex-row"
+            style={{
+              alignItems: "center",
+            }}
+          >
             <h1 className="mr-5">Upload base image:</h1>
             <UploadButton
               onUpload={(uri: string) => {
@@ -76,17 +79,23 @@ export default function FormPage(props: { opacity: number }) {
             />
           </div>
           {imageURI && (
-            <div style={{
-              width: "400px"
-            }}>
-              <img src={imageURI} className="rounded" style={{
-                height: "auto",
-                width: "100%",
-                display: "block",
-                objectFit: "cover",
-                marginInline: "auto",
-                border: "2px dashed black"
-              }}/>
+            <div
+              style={{
+                width: "400px",
+              }}
+            >
+              <img
+                src={imageURI}
+                className="rounded"
+                style={{
+                  height: "auto",
+                  width: "100%",
+                  display: "block",
+                  objectFit: "cover",
+                  marginInline: "auto",
+                  border: "2px dashed black",
+                }}
+              />
               <button
                 disabled={
                   false && (topic?.length === 0 || imageURI?.length === 0)
@@ -98,13 +107,13 @@ export default function FormPage(props: { opacity: number }) {
                 }}
                 className="bg-slate-50 p-3 rounded mt-5 hover:bg-slate-200 transition active:bg-slate-100"
                 style={{
-                  fontSize: "1.3rem"
+                  fontSize: "1.3rem",
                 }}
               >
                 Teach me a Story!
               </button>
             </div>
-          )} 
+          )}
         </div>
       </div>
     </>
