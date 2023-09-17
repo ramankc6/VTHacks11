@@ -5,7 +5,7 @@ const config = new OpenAI({
   // apiKey: process.env.OPENAI_KEY,
   dangerouslyAllowBrowser: true,
   organization: "org-TmJDI1qNxxPsvv0sGniSnxDc",
-  apiKey: "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"
+  apiKey: process.env.OPENAI_KEY
 });
 
 export default config;

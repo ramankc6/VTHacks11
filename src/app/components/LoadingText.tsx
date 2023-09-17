@@ -16,7 +16,13 @@ const LoadingText: React.FC = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  return <span>Loading{dots}</span>;
+  return (
+    <div style={{
+      fontFamily: "Storytime"
+    }}>
+      <p className="text-xlg">Loading{dots}</p>
+    </div>
+  );
 };
 
 export default LoadingText;

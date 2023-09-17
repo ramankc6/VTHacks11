@@ -42,6 +42,9 @@ export function TexturePainter(props: {
   const [hideCursorOverlay, setHideCursorOverlay] = useState(true);
 
   const drawingPoints = useMemo(() => {
+    if (!props.texture || !props.texture.image) {
+      return new Uint8Array(0);
+    }
     return new Uint8Array(
       props.texture.image.width * props.texture.image.height * 4
     );
@@ -54,8 +57,8 @@ export function TexturePainter(props: {
         className="texture-painter-container"
         style={{
           opacity: props.formOpacity * props.formOpacity,
-          width: props.formOpacity * props.texture.image.width,
-          height: props.formOpacity * props.texture.image.height,
+          width: props.texture.image ? props.formOpacity * props.texture.image.width : 0,
+          height: props.texture.image ? props.formOpacity * props.texture.image.height : 0,
         }}
       >
         <Canvas
