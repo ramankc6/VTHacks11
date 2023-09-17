@@ -23,6 +23,7 @@
     "datauri": "^4.1.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
+    "form-data": "^4.0.0",
     "fs-extra": "^11.1.1",
     "maath": "^0.7.0",
     "material-ui": "^0.20.2",
